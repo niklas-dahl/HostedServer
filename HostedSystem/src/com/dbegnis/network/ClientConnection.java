@@ -3,15 +3,16 @@ package com.dbegnis.network;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.Socket;
 
-import com.dbegnis.base.Constants;
+import com.dbegnis.base.Logger;
+import com.dbegnis.base.command.AuthoriseCommand;
 import com.dbegnis.base.command.BaseCommand;
 import com.dbegnis.base.managing.Manager;
-import com.dbegnis.base.managing.ResourceManager;
 
 public class ClientConnection implements Runnable {
+
+	private static final Logger log = Logger.getLogger(ClientConnection.class);
 
 	private Socket connection;
 	private String ipAdress;
@@ -36,9 +37,10 @@ public class ClientConnection implements Runnable {
 			out = new DataOutputStream(connection.getOutputStream());
 			in = new DataInputStream(connection.getInputStream());
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("could not correctly setup connection to client: " + e);
 		}
 		connected = true;
+		log.info("connection to client stabled");
 	}
 
 	@Override
@@ -54,18 +56,24 @@ public class ClientConnection implements Runnable {
 		}
 	}
 
-	
 	private void doCommand(String cmdString) {
 		String[] params = cmdString.split(" ");
-		BaseCommand cmd = Manager.getCommandManager().get(params[1]);
+		BaseCommand cmd = Manager.getCommandManager().get(params[0]);
+		if (!authorised && !(cmd instanceof AuthoriseCommand)) {
+			send("please login first");
+			return;
+		}
 		if (cmd != null) {
-			 if (!cmd.execute(this, params)) {
-				 send("command execution failed");
-			 }
-		
+			if (!cmd.execute(this, params)) {
+				log.error("faild to execute command: " + cmd.getClass().getSimpleName());
+				send("command execution failed");
+			}
+		} else {
+			send("no such command");
+			log.error("no such command");
 		}
 	}
-	
+
 	public void authorise(String userName) {
 		authorised = true;
 		Manager.getClientManager().put(ipAdress, this);
@@ -76,7 +84,7 @@ public class ClientConnection implements Runnable {
 		try {
 			out.writeUTF(str);
 			out.flush();
-			System.out.println("Sended  '" + str + "' to " + ipAdress);
+			log.info("Sended  '" + str + "' to " + ipAdress);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
@@ -84,9 +92,14 @@ public class ClientConnection implements Runnable {
 		return true;
 	}
 
-	public void close() throws IOException {
-		in.close();
-		out.close();
-		connection.close();
+	public void close()  {
+		try {
+			in.close();
+			out.close();
+			connection.close();
+			log.info("closed connection to " + ipAdress);
+		} catch (IOException e) {
+			log.error("failed to close connection to: " + ipAdress + " error: " + e);
+		}
 	}
 }

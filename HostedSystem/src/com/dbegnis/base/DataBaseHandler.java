@@ -13,6 +13,8 @@ import com.dbegnis.base.managing.Manager;
 
 public class DataBaseHandler {
 
+	private static final Logger log = Logger.getLogger(DataBaseHandler.class);
+
 	private Connection connection;
 	private Statement statement;
 	private Server webServer;
@@ -22,41 +24,43 @@ public class DataBaseHandler {
 			setupDataBaseConnection();
 			setupTables();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("error while initialising database: " + e);
 		}
 	}
 
 	private void setupDataBaseConnection() throws SQLException {
+		log.info("setup database connection..");
 		try {
 			Class.forName("org.h2.Driver");
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			log.error("error while getting database class: " + e);
 		}
 		connection = DriverManager.getConnection("jdbc:h2:./res/database", "sa", "sa");
 		webServer = Server.createWebServer().start();
 		statement = connection.createStatement();
+		log.info("setup database connection finished");
 	}
 
 	private void setupTables() throws SQLException {
+		log.info("setting up tables..");
 		Set<String> keys = Manager.getResourceManager().getKeySet();
-		for(String key : keys) {
-			System.out.println(key);
+		for (String key : keys) {
 			if (key.startsWith(Constants.TABLE_PREFIX)) {
 				String sql = (String) Manager.getResourceManager().get(key);
 				sql = sql.replace(Constants.TABLE_PLACEHOLDER, key);
-				System.out.println("sql: " + sql);
 				executeUpdate(sql);
-				
 			}
 		}
+		log.info("setting up tables finished");
 	}
 
 	public boolean executeUpdate(String sql) {
 		try {
+			log.info("run sql: " + sql);
 			statement.executeUpdate(sql);
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("sql execution failed: " + e);
 			return false;
 		}
 	}
@@ -66,7 +70,7 @@ public class DataBaseHandler {
 		try {
 			rs = statement.executeQuery(sql);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("sql execution failed: " + e);
 		}
 		return rs;
 	}
@@ -91,11 +95,12 @@ public class DataBaseHandler {
 	public ResultSet selectFrom(String table) {
 		return selectFrom(table, "*", "");
 	}
-	
+
 	public void close() {
 		try {
 			webServer.shutdown();
 			connection.close();
+			log.info("dabase connection closed");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

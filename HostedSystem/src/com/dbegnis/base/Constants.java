@@ -9,6 +9,9 @@ public abstract class Constants {
 	public static final String PORT = "const_port";
 	public static final String RUNNING = "const_running";
 	
+	
+	public static final String DATE_FORMAT = "yyyy.MM.dd HH:mm:ss";
+	
 	/*
 	 * table names
 	 */
