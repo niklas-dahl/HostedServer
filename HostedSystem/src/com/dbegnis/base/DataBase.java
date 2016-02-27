@@ -11,7 +11,6 @@ public class DataBase {
 		try {
 			setupDataBaseConnection();
 			setupTables();
-			insertTestData();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -32,52 +31,59 @@ public class DataBase {
 		}
 		conn = DriverManager.getConnection("jdbc:h2:./res/database", "", "");
 		stmt = conn.createStatement();
-
 	}
 
 	private void setupTables() throws SQLException {
-
 		String createQ = "CREATE TABLE IF NOT EXISTS USERS "
 				+ "(ID INT NOT NULL AUTO_INCREMENT, NAME VARCHAR(20) NOT NULL UNIQUE, PASSWORD VARCHAR(20) NOT NULL)";
-		stmt.executeUpdate(createQ);
+		executeUpdate(createQ);
 	}
 
-	public boolean insertInto(String table, String columns, String params) {
-		String insertQ = "INSERT INTO " + table + " " + columns + " VALUES" + params;
+	public boolean executeUpdate(String sql) {
 		try {
-			stmt.executeUpdate(insertQ);
+			stmt.executeUpdate(sql);
 			return true;
 		} catch (SQLException e) {
 			return false;
 		}
 	}
 
-	public ResultSet selectFrom(String table, String columns, String where) {
-		String select = "SELECT " + columns + " FROM " + table;
-		if (where != null && !"".equals(where)) {
-			select +=  " WHERE " + where;
-		}
+	public ResultSet executeQuery(String sql) {
 		ResultSet rs = null;
 		try {
-			rs = stmt.executeQuery(select);
+			rs = stmt.executeQuery(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return rs;
 	}
-	
+
+	public boolean insertInto(String table, String columns, String params) {
+		String sql = "INSERT INTO " + table + " " + columns + " VALUES" + params;
+		return executeUpdate(sql);
+	}
+
+	public ResultSet selectFrom(String table, String columns, String where) {
+		String select = "SELECT " + columns + " FROM " + table;
+		if (where != null && !"".equals(where)) {
+			select += " WHERE " + where;
+		}
+		return executeQuery(select);
+	}
+
 	public ResultSet selectFrom(String table, String columns) {
 		return selectFrom(table, columns, "");
 	}
-	
+
 	public ResultSet selectFrom(String table) {
 		return selectFrom(table, "*", "");
 	}
 
+	@SuppressWarnings("unused")
 	private void insertTestData() throws SQLException {
-		
+
 		boolean boo = insertInto("USERS", "(NAME, PASSWORD)", "('test2', 'geheim')");
-		
+
 		if (!boo) {
 			System.out.println("Failed to insert Data");
 		}
