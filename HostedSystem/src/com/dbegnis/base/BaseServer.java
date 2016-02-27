@@ -10,8 +10,13 @@ import com.dbegnis.network.CommandServer;
 public class BaseServer {
 
 	public BaseServer() {
+		setupDataBase();
 		setupResources();
 		setupCommandServer();
+	}
+
+	private void setupDataBase() {
+		Manager.getBeanManager().put(DataBase.class, new DataBase());
 	}
 
 	private void setupResources() {
@@ -22,9 +27,9 @@ public class BaseServer {
 	}
 
 	private void loadResourcesFromFiles() {
-		File f = new File("res");
+		File f = new File("res/txt");
 		for (File resource : f.listFiles()) {
-			if(!loadResourcesFromFile(resource)){
+			if (!loadResourcesFromFile(resource)) {
 				System.out.println("Failed to load resources from: " + resource.getName());
 			}
 		}
