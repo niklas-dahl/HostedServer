@@ -16,7 +16,7 @@ public class BaseServer {
 	}
 
 	private void setupDataBase() {
-		Manager.getBeanManager().put(DataBase.class, new DataBase());
+		Manager.getBeanManager().put(DataBaseHandler.class, new DataBaseHandler());
 	}
 
 	private void setupResources() {
