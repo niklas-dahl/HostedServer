@@ -7,8 +7,6 @@ public class DataBase {
 	private Connection conn;
 	private Statement stmt;
 
-	private String tab = "USERS";
-
 	public DataBase() {
 		try {
 			setupDataBaseConnection();
@@ -39,16 +37,52 @@ public class DataBase {
 
 	private void setupTables() throws SQLException {
 
-		String createQ = "CREATE TABLE IF NOT EXISTS " + tab
+		String createQ = "CREATE TABLE IF NOT EXISTS USERS "
 				+ "(ID INT NOT NULL AUTO_INCREMENT, NAME VARCHAR(20) NOT NULL UNIQUE, PASSWORD VARCHAR(20) NOT NULL)";
 		stmt.executeUpdate(createQ);
 	}
 
-	private void insertTestData() throws SQLException {
-		String insertQ = "INSERT INTO " + tab + " VALUES('2','testuser', 'secret')";
-		stmt.executeUpdate(insertQ);
+	public boolean insertInto(String table, String columns, String params) {
+		String insertQ = "INSERT INTO " + table + " " + columns + " VALUES" + params;
+		try {
+			stmt.executeUpdate(insertQ);
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
 
-		ResultSet selectRS = stmt.executeQuery("SELECT * FROM " + tab);
+	public ResultSet selectFrom(String table, String columns, String where) {
+		String select = "SELECT " + columns + " FROM " + table;
+		if (where != null && !"".equals(where)) {
+			select +=  " WHERE " + where;
+		}
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(select);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
+	public ResultSet selectFrom(String table, String columns) {
+		return selectFrom(table, columns, "");
+	}
+	
+	public ResultSet selectFrom(String table) {
+		return selectFrom(table, "*", "");
+	}
+
+	private void insertTestData() throws SQLException {
+		
+		boolean boo = insertInto("USERS", "(NAME, PASSWORD)", "('test2', 'geheim')");
+		
+		if (!boo) {
+			System.out.println("Failed to insert Data");
+		}
+
+		ResultSet selectRS = selectFrom("USERS", "*", "");
 		while (selectRS.next()) {
 			System.out.printf("%s, %s\n", selectRS.getString(1), selectRS.getString(2));
 		}
@@ -59,6 +93,5 @@ public class DataBase {
 		while (tablesRS.next()) {
 			System.out.printf("Tabelle %s vorhanden \n", tablesRS.getString(1));
 		}
-
 	}
 }
