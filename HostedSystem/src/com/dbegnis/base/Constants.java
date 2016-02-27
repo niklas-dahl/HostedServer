@@ -2,7 +2,18 @@ package com.dbegnis.base;
 
 public abstract class Constants {
 	
-	public static final String PORT = "__const:port";
-	public static final String RUNNING = "__const:running";
+	
+	/*
+	 * constants
+	 */
+	public static final String PORT = "const_port";
+	public static final String RUNNING = "const_running";
+	
+	/*
+	 * table names
+	 */
+	public static final String TABLE_PREFIX = "T_";
+	public static final String TABLE_PLACEHOLDER= "$tablename";
+	public static final String USERTABLE = "T_USERS";
 
 }

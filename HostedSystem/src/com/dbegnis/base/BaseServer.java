@@ -10,8 +10,8 @@ import com.dbegnis.network.CommandServer;
 public class BaseServer {
 
 	public BaseServer() {
-		setupDataBase();
 		setupResources();
+		setupDataBase();
 		setupCommandServer();
 	}
 

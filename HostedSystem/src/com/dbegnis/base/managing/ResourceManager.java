@@ -1,6 +1,7 @@
 package com.dbegnis.base.managing;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class ResourceManager {
 
@@ -15,13 +16,17 @@ public class ResourceManager {
 	public Object get(String key) {
 		return resources.get(key);
 	}
-
+	
 	public void put(String key, Object value) {
 		resources.put(key, value);
 	}
 
 	public void remove(String key) {
 		resources.remove(key);
+	}
+	
+	public Set<String> getKeySet() {
+		return resources.keySet();
 	}
 
 	protected static ResourceManager getResourceManager() {
