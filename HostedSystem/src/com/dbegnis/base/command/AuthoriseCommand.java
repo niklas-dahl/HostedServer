@@ -1,5 +1,8 @@
 package com.dbegnis.base.command;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.dbegnis.base.Constants;
 import com.dbegnis.base.DataBaseHandler;
 import com.dbegnis.base.Logger;
@@ -7,7 +10,7 @@ import com.dbegnis.base.managing.Manager;
 import com.dbegnis.network.ClientConnection;
 
 public class AuthoriseCommand extends BaseCommand {
-	
+
 	private static final Logger log = Logger.getLogger(AuthoriseCommand.class);
 
 	private ClientConnection caller;
@@ -24,17 +27,23 @@ public class AuthoriseCommand extends BaseCommand {
 	@Override
 	public boolean handle(String... params) {
 		this.caller = (ClientConnection) super.caller;
-		
+
 		DataBaseHandler dbh = (DataBaseHandler) Manager.getBeanManager().get(DataBaseHandler.class);
-		//TODO: authenticate user
-		dbh.selectFrom(Constants.USERTABLE, "()", "");
-		
-		 if (Manager.getResourceManager().get( params[0]) == params[1]) {
-			caller.authorise(params[0]);
-			return true;
-		} else {
-			return false;
+		try {
+			ResultSet rs = dbh.selectFrom(Constants.USERTABLE, "(NAME, PASSWORD, RIGHTSGROUP)",
+					"NAME LIKE '" + params[1] + "'");
+			if (!rs.isLast()) {
+				log.info("wrong params");
+				return false;
+			}
+			if (rs.getString(3) != null && rs.getString(3).equals(params[2])) {
+				caller.authorise(params[0], rs.getInt(4));
+				return true;
+			}
+		} catch (SQLException e) {
+			log.error("failed to check authentication: " + e);
 		}
+		return false;
 	}
 
 }

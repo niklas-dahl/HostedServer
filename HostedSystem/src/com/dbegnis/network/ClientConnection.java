@@ -18,9 +18,9 @@ public class ClientConnection implements Runnable {
 	private String ipAdress;
 	private DataOutputStream out;
 	private DataInputStream in;
-
 	private Thread thread;
-
+	
+	private int group;
 	private boolean connected = false;
 	private boolean authorised = false;
 
@@ -74,7 +74,8 @@ public class ClientConnection implements Runnable {
 		}
 	}
 
-	public void authorise(String userName) {
+	public void authorise(String userName, int group) {
+		this.group = group;
 		authorised = true;
 		Manager.getClientManager().put(ipAdress, this);
 		send("Welcome " + userName);
