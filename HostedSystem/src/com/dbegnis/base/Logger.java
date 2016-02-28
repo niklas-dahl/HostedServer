@@ -68,13 +68,13 @@ public class Logger {
 			logDirectory.mkdirs();
 		}
 		try {
-			File file = createLogFile("server.txt");
+			File file = createLogFile("server.log");
 			serverStream = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
-			file = createLogFile("info.txt");
+			file = createLogFile("info.log");
 			infoStream = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
-			file = createLogFile("error.txt");
+			file = createLogFile("error.log");
 			errorStream = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
-			file = createLogFile("debug.txt");
+			file = createLogFile("debug.log");
 			debugStream = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

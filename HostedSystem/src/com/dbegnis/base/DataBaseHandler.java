@@ -23,6 +23,7 @@ public class DataBaseHandler {
 		try {
 			setupDataBaseConnection();
 			setupTables();
+			insertBaseData();
 		} catch (SQLException e) {
 			log.error("error while initialising database: " + e);
 		}
@@ -47,11 +48,24 @@ public class DataBaseHandler {
 		for (String key : keys) {
 			if (key.startsWith(Constants.TABLE_PREFIX)) {
 				String sql = (String) Manager.getResourceManager().get(key);
-				sql = sql.replace(Constants.TABLE_PLACEHOLDER, key);
+				sql = sql.replace(Constants.TABLENAME_PLACEHOLDER, key);
 				executeUpdate(sql);
 			}
 		}
 		log.info("setting up tables finished");
+	}
+
+	private void insertBaseData() {
+		log.info("inserting base data..");
+		Set<String> keys = Manager.getResourceManager().getKeySet();
+		for (String key : keys) {
+			if (key.startsWith(Constants.USER_PREFIX)) {
+				String[] data = ((String) Manager.getResourceManager().get(key)).split(" ");
+				insertInto(Constants.USERTABLE, "(NAME, PASSWORD, RIGHTS_GROUP)",
+						"('" + key.replace(Constants.USER_PREFIX, "") + "', '" + data[0] + "', '" + data[1] + "')");
+			}
+		}
+		log.info("base data inserted");
 	}
 
 	public boolean executeUpdate(String sql) {
