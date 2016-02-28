@@ -34,11 +34,11 @@ public class ClientConnection implements Runnable {
 		try {
 			out = new DataOutputStream(connection.getOutputStream());
 			in = new DataInputStream(connection.getInputStream());
+			connected = true;
+			log.info("connection to client " + ipAdress + " stabled");
 		} catch (IOException e) {
 			log.error("could not correctly setup connection to client: " + e);
 		}
-		connected = true;
-		log.info("connection to client " + ipAdress + " stabled");
 	}
 
 	@Override
@@ -49,7 +49,8 @@ public class ClientConnection implements Runnable {
 				log.info("Received: '" + str + "' from " + ipAdress);
 				doCommand(str);
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.error("error while receiving data from " + ipAdress);
+				close();
 			}
 		}
 	}
@@ -81,6 +82,7 @@ public class ClientConnection implements Runnable {
 			log.info("Sended  '" + str + "' to " + ipAdress);
 		} catch (IOException e) {
 			e.printStackTrace();
+			close();
 			return false;
 		}
 		return true;
@@ -91,6 +93,8 @@ public class ClientConnection implements Runnable {
 			in.close();
 			out.close();
 			connection.close();
+			connected = false;
+			Manager.getClientManager().remove(ipAdress);
 			log.info("closed connection to " + ipAdress);
 		} catch (IOException e) {
 			log.error("failed to close connection to: " + ipAdress + " error: " + e);
