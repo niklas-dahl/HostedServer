@@ -82,6 +82,7 @@ public class DataBaseHandler {
 	public ResultSet executeQuery(String sql) {
 		ResultSet rs = null;
 		try {
+			log.info("run sql: " + sql);
 			rs = statement.executeQuery(sql);
 		} catch (SQLException e) {
 			log.error("sql execution failed: " + e);

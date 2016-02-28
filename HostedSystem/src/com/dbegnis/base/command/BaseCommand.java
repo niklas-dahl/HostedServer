@@ -16,14 +16,15 @@ public abstract class BaseCommand {
 	}
 
 	public boolean execute(Object caller, String... params) {
-		if (!isAllowed(caller) || !validateParameters(params)) {
+		this.caller = caller;
+		if (!isAllowed() || !validateParameters(params)) {
 			log.error("command execution failed: parameters not valid");
 			return false;
 		}
 		return handle(params);
 	}
 
-	private boolean isAllowed(Object caller) {
+	private boolean isAllowed() {
 		if (caller instanceof ClientConnection) {
 			if (((ClientConnection)caller).getRightsGroup() >= group) {
 				return true;

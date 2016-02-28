@@ -39,7 +39,7 @@ public class Logger {
 	}
 
 	public void error(String str) {
-		String logStr = "[" + dateFormat.format(new Date()) + "] [INFO] " + "[" + clazz.getSimpleName() + "]" + ": "
+		String logStr = "[" + dateFormat.format(new Date()) + "] [ERROR] " + "[" + clazz.getSimpleName() + "]" + ": "
 				+ str;
 		consoleStream.println(logStr);
 		if (logDirectory != null) {
@@ -51,7 +51,7 @@ public class Logger {
 	}
 
 	public void debug(String str) {
-		String logStr = "[" + dateFormat.format(new Date()) + "] [INFO] " + "[" + clazz.getSimpleName() + "]" + ": "
+		String logStr = "[" + dateFormat.format(new Date()) + "] [DEBUG] " + "[" + clazz.getSimpleName() + "]" + ": "
 				+ str;
 		consoleStream.println(logStr);
 		if (logDirectory != null) {

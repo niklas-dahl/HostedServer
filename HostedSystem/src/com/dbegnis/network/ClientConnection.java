@@ -38,7 +38,7 @@ public class ClientConnection implements Runnable {
 			log.error("could not correctly setup connection to client: " + e);
 		}
 		connected = true;
-		log.info("connection to client stabled");
+		log.info("connection to client " + ipAdress + " stabled");
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class ClientConnection implements Runnable {
 		while (connected) {
 			try {
 				String str = in.readUTF();
-				System.out.println("Received: " + str);
+				log.info("Received: '" + str + "' from " + ipAdress);
 				doCommand(str);
 			} catch (IOException e) {
 				e.printStackTrace();

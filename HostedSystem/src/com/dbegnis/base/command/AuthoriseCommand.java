@@ -14,7 +14,7 @@ public class AuthoriseCommand extends BaseCommand {
 	private static final Logger log = Logger.getLogger(AuthoriseCommand.class);
 
 	private ClientConnection caller;
-	
+
 	public AuthoriseCommand(int group) {
 		super(group);
 	}
@@ -34,14 +34,18 @@ public class AuthoriseCommand extends BaseCommand {
 
 		DataBaseHandler dbh = (DataBaseHandler) Manager.getBeanManager().get(DataBaseHandler.class);
 		try {
-			ResultSet rs = dbh.selectFrom(Constants.USERTABLE, "(NAME, PASSWORD, RIGHTSGROUP)",
-					"NAME LIKE '" + params[1] + "'");
+			ResultSet rs = dbh.selectFrom(Constants.USERTABLE, "*", "NAME LIKE '" + params[1] + "'");
+			if (rs == null) {
+				log.debug("no such user found");
+				return false;
+			}
+			rs.next();
 			if (!rs.isLast()) {
 				log.info("wrong params");
 				return false;
 			}
 			if (rs.getString(3) != null && rs.getString(3).equals(params[2])) {
-				caller.authorise(params[0], rs.getInt(4));
+				caller.authorise(rs.getString(2), rs.getInt(4));
 				return true;
 			}
 		} catch (SQLException e) {
