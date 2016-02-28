@@ -18,7 +18,10 @@ public class ClientConnection implements Runnable {
 	private DataOutputStream out;
 	private DataInputStream in;
 	private Thread thread;
-	
+
+	private String userName;
+
+	private int id;
 	private int rightsGroup = 0;
 	private boolean connected = false;
 
@@ -46,10 +49,10 @@ public class ClientConnection implements Runnable {
 		while (connected) {
 			try {
 				String str = in.readUTF();
-				log.info("Received: '" + str + "' from " + ipAdress);
+				log.info("Received: '" + str + "' from " + userName + "(" + ipAdress + ")");
 				doCommand(str);
 			} catch (IOException e) {
-				log.error("error while receiving data from " + ipAdress);
+				log.error("error while receiving data from " + userName + "(" + ipAdress + ")");
 				close();
 			}
 		}
@@ -69,9 +72,11 @@ public class ClientConnection implements Runnable {
 		}
 	}
 
-	public void authorise(String userName, int group) {
+	public void authorise(int id, String userName, int group) {
+		this.id = id;
+		this.userName = userName;
 		this.rightsGroup = group;
-		Manager.getClientManager().put(ipAdress, this);
+		Manager.getClientManager().put(id, this);
 		send("Welcome " + userName);
 	}
 
@@ -79,7 +84,7 @@ public class ClientConnection implements Runnable {
 		try {
 			out.writeUTF(str);
 			out.flush();
-			log.info("Sended  '" + str + "' to " + ipAdress);
+			log.info("Sended  '" + str + "' to " + userName + "(" + ipAdress + ")");
 		} catch (IOException e) {
 			e.printStackTrace();
 			close();
@@ -88,19 +93,19 @@ public class ClientConnection implements Runnable {
 		return true;
 	}
 
-	public void close()  {
+	public void close() {
 		try {
 			in.close();
 			out.close();
 			connection.close();
 			connected = false;
-			Manager.getClientManager().remove(ipAdress);
-			log.info("closed connection to " + ipAdress);
+			Manager.getClientManager().remove(id);
+			log.info("closed connection to " + userName + "(" + ipAdress + ")");
 		} catch (IOException e) {
-			log.error("failed to close connection to: " + ipAdress + " error: " + e);
+			log.error("failed to close connection to: " + userName + "(" + ipAdress + ")" + " error: " + e);
 		}
 	}
-	
+
 	public int getRightsGroup() {
 		return rightsGroup;
 	}

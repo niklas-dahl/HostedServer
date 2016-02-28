@@ -8,22 +8,22 @@ public class ClientManager {
 
 	private static ClientManager clientManager;
 
-	private HashMap<String, ClientConnection> clients;
+	private HashMap<Integer, ClientConnection> clients;
 
 	private ClientManager() {
 		clients = new HashMap<>();
 	}
 
-	public Object get(String obj) {
-		return clients.get(obj);
+	public Object get(Integer key) {
+		return clients.get(key);
 	}
 
-	public void put(String key, ClientConnection value) {
+	public void put(Integer key, ClientConnection value) {
 		clients.put(key, value);
 	}
 
-	public void remove(String obj) {
-		clients.remove(obj);
+	public void remove(Integer key) {
+		clients.remove(key);
 	}
 
 	protected static ClientManager getClientManager() {

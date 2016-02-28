@@ -45,7 +45,7 @@ public class AuthoriseCommand extends BaseCommand {
 				return false;
 			}
 			if (rs.getString(3) != null && rs.getString(3).equals(params[2])) {
-				caller.authorise(rs.getString(2), rs.getInt(4));
+				caller.authorise(rs.getInt(1), rs.getString(2), rs.getInt(4));
 				return true;
 			}
 		} catch (SQLException e) {
