@@ -21,8 +21,11 @@ public class AuthoriseCommand extends BaseCommand {
 
 	@Override
 	public boolean validateParameters(String... params) {
+		this.caller = (ClientConnection) super.caller;
+		
 		if (params == null || params.length != 3) {
-			log.error("command execution failed: this command takes exactly 2 arguments");
+			caller.send("error while executing command: this command takes exactly two arguments");
+			log.error("error while executing command: this command takes exactly two arguments");
 			return false;
 		}
 		return true;
@@ -30,18 +33,19 @@ public class AuthoriseCommand extends BaseCommand {
 
 	@Override
 	public boolean handle(String... params) {
-		this.caller = (ClientConnection) super.caller;
 
 		DataBaseHandler dbh = (DataBaseHandler) Manager.getBeanManager().get(DataBaseHandler.class);
+		
 		try {
 			ResultSet rs = dbh.selectFrom(Constants.USERTABLE, "*", "NAME LIKE '" + params[1] + "'");
 			if (rs == null) {
-				log.debug("no such user found");
+				log.info("error while authenticate user: no such user in data base");
 				return false;
 			}
 			rs.next();
+			
 			if (!rs.isLast()) {
-				log.info("wrong params");
+				log.error("error while authenticate user: result set has too many rows");
 				return false;
 			}
 			if (rs.getString(3) != null && rs.getString(3).equals(params[2])) {

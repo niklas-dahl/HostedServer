@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import com.dbegnis.base.command.AddUsersCommand;
 import com.dbegnis.base.command.AuthoriseCommand;
 import com.dbegnis.base.managing.Manager;
 import com.dbegnis.network.CommandServer;
@@ -37,6 +38,7 @@ public class BaseServer {
 
 	private void setupCommands() {
 		Manager.getCommandManager().put(Constants.AUTHCMD_NAME, new AuthoriseCommand(Constants.AUTHCMD_RG));
+		Manager.getCommandManager().put(Constants.ADDUSERCMD_NAME, new AddUsersCommand(Constants.ADDUSERCMD_RG));
 	}
 
 	private void loadResourcesFromFiles() {

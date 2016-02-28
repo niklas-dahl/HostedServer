@@ -109,4 +109,12 @@ public class ClientConnection implements Runnable {
 	public int getRightsGroup() {
 		return rightsGroup;
 	}
+	
+	public String getUserName() {
+		return userName;
+	}
+	
+	public int getId() {
+		return id;
+	}
 }
