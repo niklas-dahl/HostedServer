@@ -14,6 +14,10 @@ public class AuthoriseCommand extends BaseCommand {
 	private static final Logger log = Logger.getLogger(AuthoriseCommand.class);
 
 	private ClientConnection caller;
+	
+	public AuthoriseCommand(int group) {
+		super(group);
+	}
 
 	@Override
 	public boolean validateParameters(String... params) {

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.Socket;
 
 import com.dbegnis.base.Logger;
-import com.dbegnis.base.command.AuthoriseCommand;
 import com.dbegnis.base.command.BaseCommand;
 import com.dbegnis.base.managing.Manager;
 
@@ -20,9 +19,8 @@ public class ClientConnection implements Runnable {
 	private DataInputStream in;
 	private Thread thread;
 	
-	private int group;
+	private int rightsGroup = 0;
 	private boolean connected = false;
-	private boolean authorised = false;
 
 	public ClientConnection(Socket connection) {
 		this.connection = connection;
@@ -59,10 +57,6 @@ public class ClientConnection implements Runnable {
 	private void doCommand(String cmdString) {
 		String[] params = cmdString.split(" ");
 		BaseCommand cmd = Manager.getCommandManager().get(params[0]);
-		if (!authorised && !(cmd instanceof AuthoriseCommand)) {
-			send("please login first");
-			return;
-		}
 		if (cmd != null) {
 			if (!cmd.execute(this, params)) {
 				log.error("faild to execute command: " + cmd.getClass().getSimpleName());
@@ -75,8 +69,7 @@ public class ClientConnection implements Runnable {
 	}
 
 	public void authorise(String userName, int group) {
-		this.group = group;
-		authorised = true;
+		this.rightsGroup = group;
 		Manager.getClientManager().put(ipAdress, this);
 		send("Welcome " + userName);
 	}
@@ -102,5 +95,9 @@ public class ClientConnection implements Runnable {
 		} catch (IOException e) {
 			log.error("failed to close connection to: " + ipAdress + " error: " + e);
 		}
+	}
+	
+	public int getRightsGroup() {
+		return rightsGroup;
 	}
 }

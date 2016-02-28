@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import com.dbegnis.base.command.AuthoriseCommand;
 import com.dbegnis.base.managing.Manager;
 import com.dbegnis.network.CommandServer;
 
@@ -15,13 +16,8 @@ public class BaseServer {
 		log.info("starting up..");
 		setupResources();
 		setupDataBase();
+		setupCommands();
 		setupCommandServer();
-	}
-
-	private void setupDataBase() {
-		log.info("setting up database..");
-		Manager.getBeanManager().put(DataBaseHandler.class, new DataBaseHandler());
-		log.info("database setup finished");
 	}
 
 	private void setupResources() {
@@ -30,6 +26,16 @@ public class BaseServer {
 		Manager.getResourceManager().put(Constants.RUNNING, true);
 		loadResourcesFromFiles();
 		log.info("resources loaded");
+	}
+	
+	private void setupDataBase() {
+		log.info("setting up database..");
+		Manager.getBeanManager().put(DataBaseHandler.class, new DataBaseHandler());
+		log.info("database setup finished");
+	}
+	
+	private void setupCommands() {
+		Manager.getCommandManager().put(Constants.AUTHCMD_NAME, new AuthoriseCommand(Constants.AUTHCMD_RG));
 	}
 
 	private void loadResourcesFromFiles() {
