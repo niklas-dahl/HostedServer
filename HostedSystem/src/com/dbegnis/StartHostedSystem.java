@@ -2,6 +2,7 @@ package com.dbegnis;
 
 import com.dbegnis.base.BaseServer;
 import com.dbegnis.base.Logger;
+import com.dbegnis.base.managing.Manager;
 
 public abstract class StartHostedSystem {
 	
@@ -12,7 +13,7 @@ public abstract class StartHostedSystem {
 		log.info("");
 		log.info("-----------------------------------------------------------------");
 		log.info("");
-		new BaseServer();
+		Manager.getBeanManager().put(BaseServer.class, new BaseServer());
 	}
 
 }
