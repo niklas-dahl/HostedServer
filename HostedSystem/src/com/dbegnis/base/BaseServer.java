@@ -9,11 +9,12 @@ import com.dbegnis.base.managing.Manager;
 import com.dbegnis.network.CommandServer;
 
 public class BaseServer {
-	
+
 	private static final Logger log = Logger.getLogger(BaseServer.class);
 
 	public BaseServer() {
 		log.info("starting up..");
+		Manager.getBeanManager().put(BaseServer.class, this);
 		setupResources();
 		setupDataBase();
 		setupCommands();
@@ -27,13 +28,13 @@ public class BaseServer {
 		loadResourcesFromFiles();
 		log.info("resources loaded");
 	}
-	
+
 	private void setupDataBase() {
 		log.info("setting up database..");
 		Manager.getBeanManager().put(DataBaseHandler.class, new DataBaseHandler());
 		log.info("database setup finished");
 	}
-	
+
 	private void setupCommands() {
 		Manager.getCommandManager().put(Constants.AUTHCMD_NAME, new AuthoriseCommand(Constants.AUTHCMD_RG));
 	}

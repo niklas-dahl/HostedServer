@@ -13,7 +13,7 @@ public abstract class StartHostedSystem {
 		log.info("");
 		log.info("-----------------------------------------------------------------");
 		log.info("");
-		Manager.getBeanManager().put(BaseServer.class, new BaseServer());
+		new BaseServer();
 	}
 
 }
