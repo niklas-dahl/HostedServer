@@ -37,6 +37,7 @@ public abstract class Constants {
 	
 	public static final String USERTOUSERSTABLE = "T_USERSTOUSERS";
 
+	public static final String GROUPTABLE= "T_GROUPS";
 
 	
 

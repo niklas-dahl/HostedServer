@@ -14,6 +14,16 @@ public class AuthoriseCommand extends BaseCommand {
 	private static final Logger log = Logger.getLogger(AuthoriseCommand.class);
 
 	private ClientConnection caller;
+	
+	private static final int PARAMS_COUNT = 3;
+	
+	private static final int PARAMS_NAME = 1;
+	private static final int PARAMS_PW = 2;
+	
+	private static final int RS_ID = 1;
+	private static final int RS_NAME= 2;
+	private static final int RS_PW= 3;
+	private static final int RS_GROUP= 4;
 
 	public AuthoriseCommand(int group) {
 		super(group);
@@ -23,7 +33,7 @@ public class AuthoriseCommand extends BaseCommand {
 	public boolean validateParameters(String... params) {
 		this.caller = (ClientConnection) super.caller;
 		
-		if (params == null || params.length != 3) {
+		if (params == null || params.length != PARAMS_COUNT) {
 			caller.send("error while executing command: this command takes exactly two arguments");
 			log.error("error while executing command: this command takes exactly two arguments");
 			return false;
@@ -37,8 +47,8 @@ public class AuthoriseCommand extends BaseCommand {
 		DataBaseHandler dbh = (DataBaseHandler) Manager.getBeanManager().get(DataBaseHandler.class);
 		
 		try {
-			ResultSet rs = dbh.selectFrom(Constants.USERTABLE, "*", "NAME LIKE '" + params[1] + "'");
-			if (rs == null) {
+			ResultSet rs = dbh.selectFrom(Constants.USERTABLE, "*", "NAME LIKE '" + params[PARAMS_NAME] + "'");
+			if (rs.isLast()) {
 				log.info("error while authenticate user: no such user in data base");
 				return false;
 			}
@@ -48,8 +58,8 @@ public class AuthoriseCommand extends BaseCommand {
 				log.error("error while authenticate user: result set has too many rows");
 				return false;
 			}
-			if (rs.getString(3) != null && rs.getString(3).equals(params[2])) {
-				caller.authorise(rs.getInt(1), rs.getString(2), rs.getInt(4));
+			if (rs.getString(RS_PW) != null && rs.getString(RS_PW).equals(params[PARAMS_PW])) {
+				caller.authorise(rs.getInt(RS_ID), rs.getString(RS_NAME), rs.getInt(RS_GROUP));
 				return true;
 			}
 		} catch (SQLException e) {

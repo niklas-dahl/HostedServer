@@ -6,6 +6,8 @@ import com.dbegnis.network.ClientConnection;
 public abstract class BaseCommand {
 
 	private static final Logger log = Logger.getLogger(BaseCommand.class);
+	
+	protected static final int PARAMS_CMDNAME = 0;
 
 	protected final int group;
 
