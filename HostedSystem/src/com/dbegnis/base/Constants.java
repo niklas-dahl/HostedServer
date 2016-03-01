@@ -30,7 +30,8 @@ public abstract class Constants {
 	 * table names
 	 */
 	public static final String TABLE_PREFIX = "T_";
-	public static final String TABLENAME_PLACEHOLDER = "$tablename";
+	public static final String TABLENAME_PH = "$tablename";
+	public static final String COLUMNS_PH = "$columns";
 	
 	public static final String USER_PREFIX = "U_";
 	public static final String USERTABLE = "T_USERS";

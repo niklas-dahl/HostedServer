@@ -22,8 +22,8 @@ public class DataBaseHandler {
 	public DataBaseHandler() {
 		try {
 			setupDataBaseConnection();
-			setupTables();
-			insertBaseData();
+//			setupTables();
+//			insertBaseData();
 		} catch (SQLException e) {
 			log.error("error while initialising database: " + e);
 		}
@@ -41,20 +41,7 @@ public class DataBaseHandler {
 		statement = connection.createStatement();
 		log.info("setup database connection finished");
 	}
-
-	private void setupTables() throws SQLException {
-		log.info("setting up tables..");
-		Set<String> keys = Manager.getResourceManager().getKeySet();
-		for (String key : keys) {
-			if (key.startsWith(Constants.TABLE_PREFIX)) {
-				String sql = (String) Manager.getResourceManager().get(key);
-				sql = sql.replace(Constants.TABLENAME_PLACEHOLDER, key);
-				executeUpdate(sql);
-			}
-		}
-		log.info("setting up tables finished");
-	}
-
+	
 	private void insertBaseData() {
 		log.info("inserting base data..");
 		Set<String> keys = Manager.getResourceManager().getKeySet();

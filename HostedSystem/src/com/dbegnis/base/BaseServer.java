@@ -8,6 +8,9 @@ import com.dbegnis.base.command.AddUsersCommand;
 import com.dbegnis.base.command.AuthoriseCommand;
 import com.dbegnis.base.managing.Manager;
 import com.dbegnis.network.CommandServer;
+import com.dbegnis.tables.Groups;
+import com.dbegnis.tables.Users;
+import com.dbegnis.tables.UsersToUsers;
 
 public class BaseServer {
 
@@ -18,6 +21,7 @@ public class BaseServer {
 		Manager.getBeanManager().put(BaseServer.class, this);
 		setupResources();
 		setupDataBase();
+		loadTables();
 		setupCommands();
 		setupCommandServer();
 	}
@@ -65,6 +69,13 @@ public class BaseServer {
 		}
 		log.info("loaded resources from " + resource.getPath());
 		return true;
+	}
+
+	private void loadTables() {
+		Manager.getTableManager().put(Users.class, new Users());
+		Manager.getTableManager().put(UsersToUsers.class, new UsersToUsers());
+		Manager.getTableManager().put(Groups.class, new Groups());
+
 	}
 
 	private void setupCommandServer() {

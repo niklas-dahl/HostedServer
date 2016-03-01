@@ -18,4 +18,8 @@ public abstract class Manager {
 		return CommandManager.getCommandManager();
 	}
 	
+	public static TableManager getTableManager() {
+		return TableManager.getTableManager();
+	}
+	
 }
