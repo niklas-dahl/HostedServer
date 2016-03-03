@@ -11,8 +11,8 @@ import com.dbegnis.network.CommandServer;
 import com.dbegnis.tables.tables.Group;
 import com.dbegnis.tables.tables.User;
 import com.dbegnis.tables.tables.UsersToUser;
-import com.dbegnis.tables.tables.base.Table;
-import com.dbegnis.tables.tables.base.TableBuilder;
+import com.dbegnis.tables.tables.utils.Table;
+import com.dbegnis.tables.tables.utils.TableBuilder;
 
 public class BaseServer {
 

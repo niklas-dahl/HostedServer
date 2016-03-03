@@ -6,7 +6,7 @@ public abstract class Constants {
 	 * directories
 	 */
 	public static final String DATABASE_PATH = "jdbc:h2:./res/database";
-	public static final String LOG_PATH = "jdbc:h2:./res/database";
+	public static final String LOG_PATH = "/res/log";
 
 	/*
 	 * constants

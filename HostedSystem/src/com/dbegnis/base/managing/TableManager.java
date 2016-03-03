@@ -3,7 +3,7 @@ package com.dbegnis.base.managing;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.dbegnis.tables.tables.base.Table;
+import com.dbegnis.tables.tables.utils.Table;
 
 public class TableManager implements Iterable<Table> {
 

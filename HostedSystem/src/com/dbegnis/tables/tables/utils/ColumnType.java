@@ -1,4 +1,4 @@
-package com.dbegnis.tables.tables.base;
+package com.dbegnis.tables.tables.utils;
 
 public enum ColumnType {
 	

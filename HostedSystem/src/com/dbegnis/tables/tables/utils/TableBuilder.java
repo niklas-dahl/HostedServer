@@ -1,4 +1,4 @@
-package com.dbegnis.tables.tables.base;
+package com.dbegnis.tables.tables.utils;
 
 import java.util.Set;
 
@@ -6,6 +6,7 @@ import com.dbegnis.base.Constants;
 import com.dbegnis.base.DataBaseHandler;
 import com.dbegnis.base.Logger;
 import com.dbegnis.base.managing.Manager;
+import com.dbegnis.tables.tables.handler.UserDAO;
 
 public class TableBuilder {
 
@@ -41,6 +42,14 @@ public class TableBuilder {
 			}
 		}
 		log.info("base data inserted");
+		
+		log.debug("DAO test:");
+		
+		UserDAO user = new UserDAO("Peter", "123", "2");
+		
+		if (!user.create()) {
+			log.debug("test failed");
+		}
 	}
 
 }

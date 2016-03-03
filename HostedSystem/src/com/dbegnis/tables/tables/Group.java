@@ -1,8 +1,8 @@
 package com.dbegnis.tables.tables;
 
-import com.dbegnis.tables.tables.base.ColumnType;
-import com.dbegnis.tables.tables.base.Table;
-import com.dbegnis.tables.tables.base.TableColumn;
+import com.dbegnis.tables.tables.utils.ColumnType;
+import com.dbegnis.tables.tables.utils.Table;
+import com.dbegnis.tables.tables.utils.TableColumn;
 
 public class Group extends Table {
 
