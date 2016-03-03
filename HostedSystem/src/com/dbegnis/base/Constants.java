@@ -3,6 +3,12 @@ package com.dbegnis.base;
 public abstract class Constants {
 
 	/*
+	 * directories
+	 */
+	public static final String DATABASE_PATH = "jdbc:h2:./res/database";
+	public static final String LOG_PATH = "jdbc:h2:./res/database";
+
+	/*
 	 * constants
 	 */
 	public static final String DATE_FORMAT = "yyyy.MM.dd HH:mm:ss";
@@ -30,16 +36,11 @@ public abstract class Constants {
 	 * table names
 	 */
 	public static final String TABLE_PREFIX = "T_";
-	public static final String TABLENAME_PH = "$tablename";
-	public static final String COLUMNS_PH = "$columns";
-	
+
 	public static final String USER_PREFIX = "U_";
+	
 	public static final String USERTABLE = "T_USERS";
-	
+	public static final String GROUPTABLE = "T_GROUPS";
 	public static final String USERTOUSERSTABLE = "T_USERSTOUSERS";
-
-	public static final String GROUPTABLE= "T_GROUPS";
-
-	
 
 }

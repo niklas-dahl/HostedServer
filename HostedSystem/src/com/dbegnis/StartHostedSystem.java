@@ -1,15 +1,15 @@
 package com.dbegnis;
 
 import com.dbegnis.base.BaseServer;
+import com.dbegnis.base.Constants;
 import com.dbegnis.base.Logger;
-import com.dbegnis.base.managing.Manager;
 
 public abstract class StartHostedSystem {
-	
+
 	private static final Logger log = Logger.getLogger(StartHostedSystem.class);
 
 	public static void main(String[] args) {
-		Logger.setLogDirectory("res/log");
+		Logger.setLogDirectory(Constants.LOG_PATH);
 		log.info("");
 		log.info("-----------------------------------------------------------------");
 		log.info("");

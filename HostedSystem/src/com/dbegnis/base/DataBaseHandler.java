@@ -5,11 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Set;
 
 import org.h2.tools.Server;
-
-import com.dbegnis.base.managing.Manager;
 
 public class DataBaseHandler {
 
@@ -22,8 +19,6 @@ public class DataBaseHandler {
 	public DataBaseHandler() {
 		try {
 			setupDataBaseConnection();
-//			setupTables();
-//			insertBaseData();
 		} catch (SQLException e) {
 			log.error("error while initialising database: " + e);
 		}
@@ -36,23 +31,10 @@ public class DataBaseHandler {
 		} catch (ClassNotFoundException e) {
 			log.error("error while getting database class: " + e);
 		}
-		connection = DriverManager.getConnection("jdbc:h2:./res/database", "sa", "sa");
+		connection = DriverManager.getConnection(Constants.DATABASE_PATH, "sa", "sa");
 		webServer = Server.createWebServer().start();
 		statement = connection.createStatement();
 		log.info("setup database connection finished");
-	}
-	
-	private void insertBaseData() {
-		log.info("inserting base data..");
-		Set<String> keys = Manager.getResourceManager().getKeySet();
-		for (String key : keys) {
-			if (key.startsWith(Constants.USER_PREFIX)) {
-				String[] data = ((String) Manager.getResourceManager().get(key)).split(" ");
-				insertInto(Constants.USERTABLE, "(NAME, PASSWORD, RIGHTS_GROUP)",
-						"('" + key.replace(Constants.USER_PREFIX, "") + "', '" + data[0] + "', '" + data[1] + "')");
-			}
-		}
-		log.info("base data inserted");
 	}
 
 	public boolean executeUpdate(String sql) {
@@ -105,28 +87,6 @@ public class DataBaseHandler {
 			log.info("dabase connection closed");
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-	}
-
-	@SuppressWarnings("unused")
-	private void insertTestData() throws SQLException {
-
-		boolean boo = insertInto("USERS", "(NAME, PASSWORD)", "('test2', 'geheim')");
-
-		if (!boo) {
-			System.out.println("Failed to insert Data");
-		}
-
-		ResultSet selectRS = selectFrom("USERS", "*", "");
-		while (selectRS.next()) {
-			System.out.printf("%s, %s\n", selectRS.getString(1), selectRS.getString(2));
-		}
-
-		System.out.println("Liste Tabellen...");
-		String tablesQ = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='PUBLIC'";
-		ResultSet tablesRS = statement.executeQuery(tablesQ);
-		while (tablesRS.next()) {
-			System.out.printf("Tabelle %s vorhanden \n", tablesRS.getString(1));
 		}
 	}
 }

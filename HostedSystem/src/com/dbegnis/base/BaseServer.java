@@ -8,9 +8,11 @@ import com.dbegnis.base.command.AddUsersCommand;
 import com.dbegnis.base.command.AuthoriseCommand;
 import com.dbegnis.base.managing.Manager;
 import com.dbegnis.network.CommandServer;
-import com.dbegnis.tables.Groups;
-import com.dbegnis.tables.Users;
-import com.dbegnis.tables.UsersToUsers;
+import com.dbegnis.tables.tables.Group;
+import com.dbegnis.tables.tables.User;
+import com.dbegnis.tables.tables.UsersToUser;
+import com.dbegnis.tables.tables.base.Table;
+import com.dbegnis.tables.tables.base.TableBuilder;
 
 public class BaseServer {
 
@@ -19,10 +21,11 @@ public class BaseServer {
 	public BaseServer() {
 		log.info("starting up..");
 		Manager.getBeanManager().put(BaseServer.class, this);
+
 		setupResources();
 		setupDataBase();
-		loadTables();
 		setupCommands();
+
 		setupCommandServer();
 	}
 
@@ -37,6 +40,7 @@ public class BaseServer {
 	private void setupDataBase() {
 		log.info("setting up database..");
 		Manager.getBeanManager().put(DataBaseHandler.class, new DataBaseHandler());
+		loadTables();
 		log.info("database setup finished");
 	}
 
@@ -72,10 +76,14 @@ public class BaseServer {
 	}
 
 	private void loadTables() {
-		Manager.getTableManager().put(Users.class, new Users());
-		Manager.getTableManager().put(UsersToUsers.class, new UsersToUsers());
-		Manager.getTableManager().put(Groups.class, new Groups());
+		Table userTable = new User();
+		Manager.getBeanManager().put(User.class, userTable);
+		Manager.getTableManager().put(userTable);
+		Manager.getTableManager().put(new Group());
+		Manager.getTableManager().put(new UsersToUser());
 
+		TableBuilder.setupTables();
+		TableBuilder.insertBaseData();
 	}
 
 	private void setupCommandServer() {

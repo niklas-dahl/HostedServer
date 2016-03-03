@@ -1,37 +1,46 @@
 package com.dbegnis.base.managing;
 
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-import com.dbegnis.base.Constants;
-import com.dbegnis.tables.Table;
+import com.dbegnis.tables.tables.base.Table;
 
-public class TableManager {
+public class TableManager implements Iterable<Table> {
 
-	private static TableManager beanManager;
+	private static TableManager tableManager;
 
-	private HashMap<String, Table> beans;
+	private LinkedList<Table> tables;
 
 	private TableManager() {
-		beans = new HashMap<>();
+		tables = new LinkedList<>();
 	}
 
-	public Table get(Class<?> clazz) {
-		return beans.get(Constants.TABLE_PREFIX + clazz.getSimpleName());
+	public Table get(int i) {
+		return tables.get(i);
 	}
 
-	public void put(Class<?> clazz, Table value) {
-		beans.put(Constants.TABLE_PREFIX + clazz.getSimpleName(), value);
+	public void put(Table table) {
+		tables.add(table);
 	}
 
-	public void remove(Class<?> clazz) {
-		beans.remove(Constants.TABLE_PREFIX + clazz.getSimpleName());
+	public void remove(Table table) {
+		tables.remove(table);
+	}
+
+	public void remove(int i) {
+		tables.remove(i);
 	}
 
 	protected static TableManager getTableManager() {
-		if (beanManager == null) {
-			beanManager = new TableManager();
+		if (tableManager == null) {
+			tableManager = new TableManager();
 		}
-		return beanManager;
+		return tableManager;
+	}
+
+	@Override
+	public Iterator<Table> iterator() {
+		return tables.iterator();
 	}
 
 }
