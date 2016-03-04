@@ -6,7 +6,7 @@ It provides all users and executes all commands that a user can make.
 <h2>Guide:</h2>
 
 <h4> DAOs: </h4>
-    - DAOs shoul be used to insert new entries into tables
+    - DAOs should be used to insert new entries into tables
     - all DAOs are currently in the package com.dbegnis.tables.daos
     - to add a new entry first make a new object of your DAO class and then call the create method 
 
