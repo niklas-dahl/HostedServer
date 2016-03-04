@@ -6,22 +6,22 @@ import com.dbegnis.tables.tables.UserToGroup;
 import com.dbegnis.tables.tables.utils.DAO;
 import com.dbegnis.tables.tables.utils.TableParameter;
 
-public class UserToUserDAO extends DAO {
+public class UserToGroupDAO extends DAO {
 	
-	private static Logger log = Logger.getLogger(UserToUserDAO.class);
-
-	public UserToUserDAO(String u1_Id, String u2_Id) {
-		addTableParameter(new TableParameter(UserToGroup.ID_USER, u1_Id));
-		addTableParameter(new TableParameter(UserToGroup.ID_GROUP, u2_Id));
+	private static Logger log = Logger.getLogger(UserToGroupDAO.class);
+	
+	public UserToGroupDAO(String userID, String groupID) {
+		addTableParameter(new TableParameter(UserToGroup.ID_USER, userID));
+		addTableParameter(new TableParameter(UserToGroup.ID_GROUP, groupID));
 	}
 
 	@Override
 	public boolean create() {
 		boolean result = super.insertInto(Constants.USERTOGROUPTABLE);
 		if (!result) {
-			log.info("could not connect users");
+			log.info("could not add user to group");
 		}
-		log.info("connected users");
+		log.info("added user to group");
 		return result;
 	}
 

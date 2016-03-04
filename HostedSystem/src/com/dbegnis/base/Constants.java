@@ -39,8 +39,9 @@ public abstract class Constants {
 
 	public static final String USER_PREFIX = "U_";
 	
-	public static final String USERTABLE = "T_USERS";
-	public static final String GROUPTABLE = "T_GROUPS";
-	public static final String USERTOUSERSTABLE = "T_USERSTOUSERS";
+	public static final String USERTABLE = "T_USER";
+	public static final String GROUPTABLE = "T_GROUP";
+	public static final String USERTOUSERSTABLE = "T_USERSTOUSER";
+	public static final String USERTOGROUPTABLE = "T_USERSTOGROUP";
 
 }

@@ -13,11 +13,9 @@ public class TableBuilder {
 	private static final Logger log = Logger.getLogger(TableBuilder.class);
 
 	public static void setupTables() {
-
 		log.info("setting up tables..");
-
+		
 		DataBaseHandler dataBaseHandler = (DataBaseHandler) Manager.getBeanManager().get(DataBaseHandler.class);
-
 		for (Table t : Manager.getTableManager()) {
 			boolean res = dataBaseHandler.executeUpdate(t.getTableSQL());
 			if (!res) {
@@ -26,30 +24,20 @@ public class TableBuilder {
 			}
 			log.info("created table " + t.getTableName());
 		}
+		log.info("all tables setup");
 	}
-	
+
 	public static void insertBaseData() {
 		log.info("inserting base data..");
 		
-		DataBaseHandler dataBaseHandler = (DataBaseHandler) Manager.getBeanManager().get(DataBaseHandler.class);
-
 		Set<String> keys = Manager.getResourceManager().getKeySet();
 		for (String key : keys) {
 			if (key.startsWith(Constants.USER_PREFIX)) {
 				String[] data = ((String) Manager.getResourceManager().get(key)).split(" ");
-				dataBaseHandler.insertInto(Constants.USERTABLE, "(NAME, PASSWORD, RIGHTSGROUP)",
-						"('" + key.replace(Constants.USER_PREFIX, "") + "', '" + data[0] + "', '" + data[1] + "')");
+				new UserDAO(key.replace(Constants.USER_PREFIX, ""), data[0], data[1]).create();
 			}
 		}
 		log.info("base data inserted");
-		
-		log.debug("DAO test:");
-		
-		UserDAO user = new UserDAO("Peter", "123", "2");
-		
-		if (!user.create()) {
-			log.debug("test failed");
-		}
 	}
 
 }
