@@ -10,7 +10,7 @@ It provides all users and executes all commands that a user can make.
     - all DAOs are currently in the package com.dbegnis.tables.daos
     - to add a new entry first make a new object of your DAO class and then call the create method 
 
-<h4> create a new command: </h4>
+<h4> Createing a New Command: </h4>
     - create a java class with the following pattern in package com.dbegnis.base.command
     - extend from BaseCommand from the package com.dbegnis.base.command
     - BaseCommand expects an integer rightsgroup, this is the rightsgroup a user needs to execute this command
