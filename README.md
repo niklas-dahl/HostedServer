@@ -14,11 +14,11 @@ It provides all users and executes all commands that a user can make.
 <h4> Createing a New Command: </h4>
     - create a java class with the following pattern in package com.dbegnis.base.command
     - extend from BaseCommand from the package com.dbegnis.base.command
-    - BaseCommand expects an integer rightsgroup, this is the rightsgroup a user needs to execute this command
+    - BaseCommand expects an int rightsGroup, this is the rights group a user needs to execute this command
       (you'll lern more about RightsGroups later)
     - add your command to the command manger in the class com.dbegnis.base.BaseServer in the setupCommands() method
     
-<h4> Right Groups: </h4>
+<h4> Rights Groups: </h4>
     - currently there are five existing right groups
     - from zero to four where four is the highest
     - zero means the client hasn't authorise himself yet so the only commands with zeo should be login or register
