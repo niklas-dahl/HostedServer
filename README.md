@@ -15,13 +15,13 @@ It provides all users and executes all commands that a user can make.
     - create a java class with the following pattern in package com.hosted.base.command
     - extend from BaseCommand from the package com.hosted.base.command
     - BaseCommand expects an int rightsGroup, this is the rights group a user needs to execute this command
-      (you'll lern more about RightsGroups later)
+      (you'll learn more about RightsGroups later)
     - add your command to the command manger in the class com.hosted.base.BaseServer in the setupCommands() method
     
 <h4> Rights Groups: </h4>
     - currently there are five existing right groups
     - from zero to four where four is the highest
-    - zero means the client hasn't authorise himself yet so the only commands with zeo should be login or register
+    - zero means the client hasn't authorise himself yet so the only commands with zero should be login or register
     - one represent normal users, two insn't declared yet (maybe premium or something)
     - users with rights group three are admins and users with four are system-admins (which shouldn't be normal users)
     
